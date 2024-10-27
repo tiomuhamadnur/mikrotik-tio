@@ -24,13 +24,12 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                            <a class="dropdown-item" href="{{ route('user.index') }}">View More</a>
                                         </div>
                                     </div>
                                 </div>
                                 <span>All Users</span>
-                                <h3 class="card-title text-nowrap mb-1">32</h3>
+                                <h3 class="card-title text-nowrap mb-1">{{ $all_user ?? 0 }}</h3>
                             </div>
                         </div>
                     </div>
@@ -49,13 +48,12 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                            <a class="dropdown-item" href="{{ route('user.active') }}">View More</a>
                                         </div>
                                     </div>
                                 </div>
                                 <span>Active User</span>
-                                <h3 class="card-title text-nowrap mb-1">15</h3>
+                                <h3 class="card-title text-nowrap mb-1">{{ $active_user ?? 0 }}</h3>
                             </div>
                         </div>
                     </div>
@@ -74,13 +72,12 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                            <a class="dropdown-item" href="{{ route('user.voucher') }}">View More</a>
                                         </div>
                                     </div>
                                 </div>
                                 <span>Voucher</span>
-                                <h3 class="card-title text-nowrap mb-1">45</h3>
+                                <h3 class="card-title text-nowrap mb-1">{{ $voucher ?? 0 }}</h3>
                             </div>
                         </div>
                     </div>
@@ -100,12 +97,11 @@
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
                                             <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                         </div>
                                     </div>
                                 </div>
                                 <span>Up Time</span>
-                                <h3 class="card-title text-nowrap mb-1">07:30:45</h3>
+                                <h3 class="card-title text-nowrap mb-1">{{ $uptime ?? 'N/A' }}</h3>
                             </div>
                         </div>
                     </div>
