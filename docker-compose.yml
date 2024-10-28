@@ -16,7 +16,7 @@ services:
       - DB_CONNECTION=mysql
       - DB_HOST=192.168.100.7
       - DB_PORT=3306
-      - DB_DATABASE=mikrotik-tio
+      - DB_DATABASE=mikrotik_app
       - DB_USERNAME=root
       - DB_PASSWORD=Baragajul
 
