@@ -1,8 +1,8 @@
 version: '3'
 services:
   app:
-    image: laravel
-    container_name: laravel_app
+    image: php:8.2-cli
+    container_name: mikrotik-tio
     ports:
       - "8000:8000"
     networks:
