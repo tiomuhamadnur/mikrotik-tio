@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function index() {
         $query = (new Query('/ip/hotspot/user/print'))
-                ->equal('.proplist', 'name,password,mac-address,limit-uptime,uptime,comment,profile'); // Menampilkan kolom yang dibutuhkan
+                ->equal('.proplist', '.id,name,password,mac-address,limit-uptime,uptime,comment,profile');
 
         $user = $this->client->query($query)->read();
         $comment = collect($user)
@@ -33,9 +33,6 @@ class UserController extends Controller
                         return str_contains($comment, 'up');
                     })
                     ->unique();
-        // dd($comment);
-
-        // dd($user);
 
         return view('pages.user.index', compact([
             'user',
@@ -55,10 +52,25 @@ class UserController extends Controller
         ]));
     }
 
-    public function voucher()
+    public function voucher(Request $request)
     {
+        $request->validate([
+            'profile' => 'nullable|string',
+            'comment' => 'nullable|string',
+        ]);
+
         $query = (new Query('/ip/hotspot/user/print'))
-                    ->equal('.proplist', 'name,password,mac-address,limit-uptime,uptime,comment,profile'); // Menampilkan kolom yang dibutuhkan
+                    ->equal('.proplist', '.id,name,password,mac-address,limit-uptime,uptime,comment,profile');
+
+        if($request->profile != null)
+        {
+            $query->where('profile', $request->profile);
+        }
+
+        if($request->comment != null)
+        {
+            $query->where('comment', $request->comment);
+        }
 
         $users = $this->client->query($query)->read();
 
@@ -70,7 +82,6 @@ class UserController extends Controller
             return is_null($macAddress) && !is_null($profile) && $profile !== 'default';
         });
 
-        // Mengambil 'comment' dari hasil filter yang mengandung kata 'up' dan unik
         $comment = collect($user)
                         ->map(function ($user) {
                             return [
@@ -81,7 +92,7 @@ class UserController extends Controller
                         ->filter(function ($item) {
                             return isset($item['comment']) && str_contains($item['comment'], 'up');
                         })
-                        ->unique('comment'); // Unik berdasarkan 'comment' saja
+                        ->unique('comment');
 
         return view('pages.voucher.index', compact('user', 'comment'));
     }
@@ -150,8 +161,20 @@ class UserController extends Controller
         //
     }
 
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $request->validate([
+            'id' => 'required|string'
+        ]);
+
+        $query = (new Query('/ip/hotspot/user/remove'))
+                ->equal('.id', $request->id);
+
+        try {
+        $this->client->query($query)->read();
+            return redirect()->back()->withNotify('Data deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->withNotify('Failed to delete this data');
+        }
     }
 }

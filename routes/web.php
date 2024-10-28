@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::controller(UserController::class)->group(function () {
         Route::get('/user', 'index')->name('user.index');
+        Route::delete('/user', 'destroy')->name('user.delete');
         Route::get('/user-active', 'active')->name('user.active');
         Route::get('/voucher', 'voucher')->name('user.voucher');
         Route::post('/voucher', 'voucher_pdf')->name('voucher.pdf');

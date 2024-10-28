@@ -56,7 +56,7 @@
 
                 <div class="content-wrapper">
                     @yield('content')
-
+                    @include('layouts.modal')
                     @include('layouts.footer')
 
                     <div class="content-backdrop fade"></div>

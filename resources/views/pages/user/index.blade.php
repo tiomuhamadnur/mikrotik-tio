@@ -43,8 +43,9 @@
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="javascript:void(0);"><i
                                                     class="bx bx-edit-alt me-1"></i> Edit</a>
-                                            <a class="dropdown-item" href="javascript:void(0);"><i
-                                                    class="bx bx-trash me-1"></i>
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" data-id="{{ $item['.id'] }}"
+                                                data-url="{{ route('user.delete') }}"><i class="bx bx-trash me-1"></i>
                                                 Delete</a>
                                         </div>
                                     </div>
@@ -56,4 +57,16 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascript')
+    <script>
+        $('#deleteModal').on('show.bs.modal', function(e) {
+            var id = $(e.relatedTarget).data('id');
+            var url = $(e.relatedTarget).data('url');
+
+            document.getElementById("id_modal").value = id;
+            document.getElementById("deleteForm").action = url;
+        });
+    </script>
 @endsection
