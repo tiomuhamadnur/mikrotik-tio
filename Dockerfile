@@ -1,21 +1,43 @@
-# Gunakan PHP 8.2 CLI sebagai base image
-FROM php:8.2-cli
+# Menggunakan PHP 8.2 sebagai dasar
+FROM php:8.2-fpm
 
-# Update dan instal dependencies yang dibutuhkan
-RUN apt-get update && \
-    apt-get install -y \
+# Install dependencies dan Node.js
+RUN apt-get update && apt-get install -y \
+    git \
     curl \
-    unzip && \
-    docker-php-ext-install pdo pdo_mysql
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    nano \
+    gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Instal Composer
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set direktori kerja dalam kontainer
+# Set working directory
 WORKDIR /var/www/html
 
-# Pastikan semua perintah di atas terselesaikan dan bersih
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# Copy aplikasi Laravel
+COPY . .
 
-# Perintah default untuk menjalankan server Laravel
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Install dependencies Laravel dan Node.js
+RUN composer install --optimize-autoloader --no-dev \
+    && npm install \
+    && npm run build
+
+# Setel izin untuk direktori storage dan cache
+RUN chmod -R 775 storage bootstrap/cache
+
+# Copy .env dan generate app key Laravel
+RUN cp .env.example .env \
+    && php artisan key:generate
+
+# Perintah default untuk container
+CMD ["php-fpm"]
